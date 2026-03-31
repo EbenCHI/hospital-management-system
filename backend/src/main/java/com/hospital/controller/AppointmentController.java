@@ -18,10 +18,10 @@ public class AppointmentController {
     @Autowired
     private AppointmentService appointmentService;
 
-    @GetMapping
-    public ResponseEntity<List<Appointment>> getAllAppointments() {
-        return ResponseEntity.ok(appointmentService.getAllAppointments());
-    }
+  @GetMapping
+public List<Appointment> getAllAppointments() {
+    return appointmentService.getAllAppointments();
+}
 
     @PostMapping
     public ResponseEntity<?> createAppointment(@RequestBody Map<String, Object> request) {

@@ -16,18 +16,22 @@ import java.util.Map;
 @CrossOrigin(origins = "*")
 public class PatientController {
 
-    @AutowiredSS
+    @Autowired
     private PatientService patientService;
 
+    // ✅ Get all patients (with optional search)
     @GetMapping
     public ResponseEntity<List<Patient>> getAllPatients(
             @RequestParam(required = false) String search) {
+
         if (search != null && !search.isEmpty()) {
             return ResponseEntity.ok(patientService.searchPatients(search));
         }
+
         return ResponseEntity.ok(patientService.getAllPatients());
     }
 
+    // ✅ Get patient by ID
     @GetMapping("/{id}")
     public ResponseEntity<Patient> getPatientById(@PathVariable Long id) {
         return patientService.getPatientById(id)
@@ -35,12 +39,14 @@ public class PatientController {
                 .orElse(ResponseEntity.notFound().build());
     }
 
+    // ✅ Create patient
     @PostMapping
     public ResponseEntity<Patient> createPatient(@Valid @RequestBody Patient patient) {
         Patient created = patientService.createPatient(patient);
         return ResponseEntity.status(HttpStatus.CREATED).body(created);
     }
 
+    // ✅ Update patient
     @PutMapping("/{id}")
     public ResponseEntity<Patient> updatePatient(
             @PathVariable Long id,
@@ -53,6 +59,7 @@ public class PatientController {
         }
     }
 
+    // ✅ Delete patient
     @DeleteMapping("/{id}")
     public ResponseEntity<Map<String, String>> deletePatient(@PathVariable Long id) {
         try {
@@ -63,6 +70,7 @@ public class PatientController {
         }
     }
 
+    // ✅ Count patients
     @GetMapping("/count")
     public ResponseEntity<Map<String, Long>> getPatientCount() {
         return ResponseEntity.ok(Map.of("count", patientService.countPatients()));
